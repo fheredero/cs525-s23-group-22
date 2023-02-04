@@ -8,10 +8,10 @@
 
 extern void initStorageManager(void) {
     if (access(".", W_OK) != 0){
-    	printf("Storage manager doesn't have write permission in this folder.\nExiting...\n");
-	    exit(RC_WRITE_FAILED);
+        printf("Storage manager doesn't have write permission in this folder.\nExiting...\n");
+        exit(RC_WRITE_FAILED);
     }
-// The following code initializes the structs in case there were stored values
+    // The following code initializes the structs in case there were stored values
     SM_FileHandle fileHandle;
     fileHandle.fileName = NULL;
     fileHandle.totalNumPages = 0;
