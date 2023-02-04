@@ -15,6 +15,11 @@ typedef struct SM_FileHandle {
 
 typedef char* SM_PageHandle;
 
+typedef struct SM_Header { 
+	int totalNumPages;
+	int curPagePos;
+} SM_Header;
+
 /************************************************************
  *                    interface                             *
  ************************************************************/
