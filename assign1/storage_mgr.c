@@ -8,40 +8,39 @@
 
 extern void initStorageManager(void) {
     if (access(".", W_OK) != 0){
-	    printf("Storage manager doesn't have write permission in this folder.\nExiting...\n");
+    	printf("Storage manager doesn't have write permission in this folder.\nExiting...\n");
 	    exit(RC_WRITE_FAILED);
-	}
-	
-	// The following code initializes the structs in case there were stored values
-	SM_FileHandle fileHandle;
-	fileHandle.fileName = NULL;
-	fileHandle.totalNumPages = 0;
-	fileHandle.curPagePos = 0;
-	fileHandle.mgmtInfo = NULL;
-	
-	SM_PageHandle pageHandle;
-	pageHandle = NULL;
-	printf("Storage manager initialized\n");
+    }
+// The following code initializes the structs in case there were stored values
+    SM_FileHandle fileHandle;
+    fileHandle.fileName = NULL;
+    fileHandle.totalNumPages = 0;
+    fileHandle.curPagePos = 0;
+    fileHandle.mgmtInfo = NULL;
+
+    SM_PageHandle pageHandle;
+    pageHandle = NULL;
+    printf("Storage manager initialized\n");
 }
 
 extern RC createPageFile (char *fileName){
     FILE *file = fopen(fileName, "w+");
-	struct SM_FileHeader fHeader;
-	fHeader.totalNumPages = 1
-	fHeader.curPagePos = 0
-	fwrite(&fHeader,sizeof(fHeader),1,file);
+    struct SM_FileHeader fHeader;
+    fHeader.totalNumPages = 1
+    fHeader.curPagePos = 0
+    fwrite(&fHeader,sizeof(fHeader),1,file);
     char *charArray = malloc(PAGE_SIZE);
     int i = 0;
-	while(i < numberOfChar){
-	    charArray[i] = '\0';
-		i++;
+    while(i < numberOfChar){
+        charArray[i] = '\0';
+        i++;
     }
-	int write = fwrite(charArray, 1, PAGE_SIZE, file);
-	fclose(file);
-	if (write != PAGE_SIZE){ 			
-	    return RC_WRITE_FAILED;			
-	}
-	return(RC_OK);
+    int write = fwrite(charArray, 1, PAGE_SIZE, file);
+    fclose(file);
+    if (write != PAGE_SIZE){ 			
+        return RC_WRITE_FAILED;			
+    }
+    return(RC_OK);
 }
 
 extern RC openPageFile (char *fileName, SM_FileHandle *fHandle){
@@ -90,8 +89,9 @@ extern RC readBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
     int position = PAGE_SIZE * pageNum; // We declare the position as the size of one page times the page number
     if(fseek(file, position, SEEK_SET) != 0){ // If the seek is not successful (different than 0)
        return RC_READ_NON_EXISTING_PAGE;    // Non existing page
-    } else { // If the seek is successful (equal to 0)
-        fread(memPage, 1, PAGE_SIZE, file); // Read the page
+    }
+    // If the seek is successful (equal to 0)
+    fread(memPage, 1, PAGE_SIZE, file); // Read the page
     fHandle -> curPagePos = pageNum; // Update the current page position to the page number
     struct SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
