@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-extern void initStorageManager(void){
+extern void initStorageManager(void){ // TBD
 
 }
 
