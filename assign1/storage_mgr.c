@@ -6,8 +6,22 @@
 #include <stdio.h>
 #include <unistd.h>
 
-extern void initStorageManager(void){ // TBD
-
+extern void initStorageManager(void) {
+    if (access(".", W_OK) != 0){
+	    printf("Storage manager doesn't have write permission in this folder.\nExiting...\n");
+	    exit(RC_WRITE_FAILED);
+	}
+	
+	// The following code initializes the structs in case there were stored values
+	SM_FileHandle fileHandle;
+	fileHandle.fileName = NULL;
+	fileHandle.totalNumPages = 0;
+	fileHandle.curPagePos = 0;
+	fileHandle.mgmtInfo = NULL;
+	
+	SM_PageHandle pageHandle;
+	pageHandle = NULL;
+	printf("Storage manager initialized\n");
 }
 
 extern RC createPageFile (char *fileName){
