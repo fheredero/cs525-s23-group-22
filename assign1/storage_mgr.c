@@ -72,7 +72,6 @@ extern RC destroyPageFile (char *fileName){
     }
     fclose(file);
     remove(fileName);   // Maybe add status
-    free(file);
     return RC_OK;
 }
 
