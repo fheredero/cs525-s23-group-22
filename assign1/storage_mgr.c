@@ -74,7 +74,7 @@ extern RC destroyPageFile (char *fileName){
     if(!file){
         return RC_FILE_NOT_FOUND;
     }
-    remove(file);   // Maybe add status
+    remove(&file);   // Maybe add status
     return RC_OK;
 }
 
