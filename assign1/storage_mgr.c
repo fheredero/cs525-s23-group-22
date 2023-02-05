@@ -30,16 +30,24 @@ extern RC createPageFile (char *fileName){
     fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
     char *charArray = calloc(PAGE_SIZE, 1);
-    //int i = 0;
-    //while(i < PAGE_SIZE){
-     //   charArray[i] = '\0';
-       // i++;
-    //}
-    int write = fwrite(charArray, 1, PAGE_SIZE, file);
-    fclose(file);
-    if (write != PAGE_SIZE){ 			
-        return RC_WRITE_FAILED;			
+    int i = 0;
+
+    if(fwrite(charArray, 1, PAGE_SIZE, file) < PAGE_SIZE){
+	    printf("write failed \n");
     }
+	else{
+		printf("write succeeded \n");
+    }
+    //while(i < PAGE_SIZE){
+      //  charArray[i] = '\0';
+        //i++;
+    //}
+    //int write = fwrite(charArray, 1, PAGE_SIZE, file);
+    //fclose(file);
+    //if (write != PAGE_SIZE){ 			
+       // return RC_WRITE_FAILED;			
+    //}
+    fclose(file);
     return(RC_OK);
 }
 
