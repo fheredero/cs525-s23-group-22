@@ -58,11 +58,11 @@ extern RC openPageFile (char *fileName, SM_FileHandle *fHandle){
 }
 
 extern RC closePageFile(SM_FileHandle *fHandle) {
-    file = fHandle->mgmtInfo; // Opens the file for both reading and writing
+    FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){ // If the opened file is NULL 
         return RC_FILE_NOT_FOUND;   // File not found
     }   
-    status = fclose(file); // Closes the file
+    int status = fclose(file); // Closes the file
     if(satus != 0){
         return RC_FILE_NOT_FOUND;
     } 
@@ -82,7 +82,7 @@ extern RC readBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
     if(fHandle->totalNumPages < pageNum || pageNum < 0){  // If the file has less than pageNum pages
         return RC_READ_NON_EXISTING_PAGE;   // Non existing page
     }
-    file = fHandle->mgmtInfo; // Opens the file for both reading and writing
+    FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){  // If file is NULL
         return RC_FILE_NOT_FOUND;   // File not found
     }
@@ -137,7 +137,7 @@ extern RC writeBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage
     if(pageNum < 0 || pageNum > fHandle->totalNumPages){ // If pageNum is out of range
         return RC_READ_NON_EXISTING_PAGE;
     }
-    file = fHandle->mgmtInfo; // Opens the file for both reading and writing
+    FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){  // If file is NULL
         return RC_FILE_NOT_FOUND;
     }
@@ -160,7 +160,7 @@ extern RC writeCurrentBlock (SM_FileHandle *fHandle, SM_PageHandle memPage){
 }
 
 extern RC appendEmptyBlock (SM_FileHandle *fHandle){
-    file = fHandle->mgmtInfo; // Opens the file for both reading and writing
+    FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){ // If file is NULL
         return RC_FILE_NOT_FOUND;
     }
@@ -185,7 +185,7 @@ extern RC appendEmptyBlock (SM_FileHandle *fHandle){
 }
 
 extern RC ensureCapacity (int numberOfPages, SM_FileHandle *fHandle){
-    file = fHandle->mgmtInfo; // Opens the file for both reading and writing
+    FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){
         return RC_FILE_NOT_FOUND;
     }
