@@ -31,7 +31,7 @@ extern RC createPageFile (char *fileName){
     fwrite(&fHeader,sizeof(fHeader),1,file);
     char *charArray = malloc(PAGE_SIZE);
     int i = 0;
-    while(i < numberOfChar){
+    while(i < PAGE_SIZE){
         charArray[i] = '\0';
         i++;
     }
