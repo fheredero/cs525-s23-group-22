@@ -6,7 +6,10 @@
 #include <stdio.h>
 
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 extern void initStorageManager(void){ //init
 
 }
