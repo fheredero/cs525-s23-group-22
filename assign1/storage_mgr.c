@@ -32,6 +32,7 @@ extern RC createPageFile (char *fileName){
     char *charArray = calloc(PAGE_SIZE, 1);
     int write = fwrite(charArray, 1, PAGE_SIZE, file);
     fclose(file);
+    free(charArray);
     if (write != PAGE_SIZE){ 			
         return RC_WRITE_FAILED;			
     }
@@ -165,6 +166,7 @@ extern RC appendEmptyBlock (SM_FileHandle *fHandle){
     fseek(file, fHandle->totalNumPages, SEEK_SET);
     char * charArray =  calloc(PAGE_SIZE, 1);
     int status = fwrite(charArray, 1, PAGE_SIZE, file);
+    free(charArray);
     if(status != PAGE_SIZE){
         return RC_WRITE_FAILED;
     }
