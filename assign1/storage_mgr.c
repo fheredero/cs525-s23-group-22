@@ -63,7 +63,7 @@ extern RC closePageFile(SM_FileHandle *fHandle) {
         return RC_FILE_NOT_FOUND;   // File not found
     }   
     int status = fclose(file); // Closes the file
-    if(satus != 0){
+    if(status != 0){
         return RC_FILE_NOT_FOUND;
     } 
     return RC_OK;
@@ -128,7 +128,7 @@ extern RC readNextBlock (SM_FileHandle *fHandle, SM_PageHandle memPage){
     return readBlock(position, fHandle, memPage);
 }
 
-extern RC readLastBlock (SM_FileHandle *fHandle, SM_PageHandle memPage{
+extern RC readLastBlock (SM_FileHandle *fHandle, SM_PageHandle memPage){
     int numPages = fHandle -> totalNumPages;
     return readBlock(numPages, fHandle, memPage);
 }
