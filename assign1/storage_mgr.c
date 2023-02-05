@@ -25,7 +25,7 @@ extern void initStorageManager(void) {
 
 extern RC createPageFile (char *fileName){
     FILE *file = fopen(fileName, "w+");
-    struct SM_FileHeader fHeader;
+    SM_FileHeader fHeader;
     fHeader.totalNumPages = 1;
     fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
@@ -48,7 +48,7 @@ extern RC openPageFile (char *fileName, SM_FileHandle *fHandle){
     if(!file){   // If the file doesn't exist
         return RC_FILE_NOT_FOUND;   // File not found
     }
-    struct SM_FileHeader fHeader;
+    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fHandle -> fileName = fileName;
     fHandle -> totalNumPages = fHeader.totalNumPages;
@@ -93,7 +93,7 @@ extern RC readBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
     // If the seek is successful (equal to 0)
     fread(memPage, 1, PAGE_SIZE, file); // Read the page
     fHandle -> curPagePos = pageNum; // Update the current page position to the page number
-    struct SM_FileHeader fHeader;
+    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fHeader.curPagePos = pageNum; 
     return RC_OK;   
@@ -141,7 +141,7 @@ extern RC writeBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage
     if(!file){  // If file is NULL
         return RC_FILE_NOT_FOUND;
     }
-    struct SM_FileHeader fHeader;
+    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     int position = pageNum*PAGE_SIZE;
     fseek(file, position, SEEK_SET);
@@ -165,7 +165,7 @@ extern RC appendEmptyBlock (SM_FileHandle *fHandle){
         return RC_FILE_NOT_FOUND;
     }
     int position = getBlockPos(fHandle);
-    struct SM_FileHeader fHeader;
+    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fseek(file, fHandle->totalNumPages, SEEK_SET);
     char * charArray =  malloc(PAGE_SIZE);
