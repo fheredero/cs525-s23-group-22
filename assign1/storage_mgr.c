@@ -138,7 +138,7 @@ extern RC writeBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage
     }
     SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
-    int position = pageNum*PAGE_SIZE;
+    int position = pageNum*PAGE_SIZE + sizeof(fHeader);
     fseek(file, position, SEEK_SET);
     int write = fwrite(memPage, 1, PAGE_SIZE, file);
     if(write != PAGE_SIZE){
