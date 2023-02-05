@@ -29,12 +29,12 @@ extern RC createPageFile (char *fileName){
     fHeader.totalNumPages = 1;
     fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
-    char *charArray = malloc(PAGE_SIZE);
-    int i = 0;
-    while(i < PAGE_SIZE){
-        charArray[i] = '\0';
-        i++;
-    }
+    char *charArray = calloc(PAGE_SIZE, 1);
+    //int i = 0;
+    //while(i < PAGE_SIZE){
+     //   charArray[i] = '\0';
+       // i++;
+    //}
     int write = fwrite(charArray, 1, PAGE_SIZE, file);
     fclose(file);
     if (write != PAGE_SIZE){ 			
