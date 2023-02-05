@@ -70,7 +70,9 @@ extern RC destroyPageFile (char *fileName){
     if(!file){
         return RC_FILE_NOT_FOUND;
     }
+    fclose(file);
     remove(fileName);   // Maybe add status
+    free(file);
     return RC_OK;
 }
 
