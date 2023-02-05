@@ -26,8 +26,8 @@ extern void initStorageManager(void) {
 extern RC createPageFile (char *fileName){
     FILE *file = fopen(fileName, "w+");
     struct SM_FileHeader fHeader;
-    fHeader.totalNumPages = 1
-    fHeader.curPagePos = 0
+    fHeader.totalNumPages = 1;
+    fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
     char *charArray = malloc(PAGE_SIZE);
     int i = 0;
@@ -151,7 +151,6 @@ extern RC writeBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage
     }
     fHandle -> curPagePos = pageNum;
     fHeader.curPagePos = pageNum;
-    //fHandle -> totalNumPages++;
     return RC_OK;
 }
 
