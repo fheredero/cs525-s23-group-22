@@ -30,24 +30,11 @@ extern RC createPageFile (char *fileName){
     fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
     char *charArray = calloc(PAGE_SIZE, 1);
-    int i = 0;
-
-    if(fwrite(charArray, 1, PAGE_SIZE, file) < PAGE_SIZE){
-	    printf("write failed \n");
-    }
-	else{
-		printf("write succeeded \n");
-    }
-    //while(i < PAGE_SIZE){
-      //  charArray[i] = '\0';
-        //i++;
-    //}
-    //int write = fwrite(charArray, 1, PAGE_SIZE, file);
-    //fclose(file);
-    //if (write != PAGE_SIZE){ 			
-       // return RC_WRITE_FAILED;			
-    //}
+    int write = fwrite(charArray, 1, PAGE_SIZE, file);
     fclose(file);
+    if (write != PAGE_SIZE){ 			
+        return RC_WRITE_FAILED;			
+    }
     return(RC_OK);
 }
 
@@ -94,14 +81,14 @@ extern RC readBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
     if(!file){  // If file is NULL
         return RC_FILE_NOT_FOUND;   // File not found
     }
-    int position = PAGE_SIZE * pageNum; // We declare the position as the size of one page times the page number
+    SM_FileHeader fHeader;
+    int position = PAGE_SIZE * pageNum + sizeof(fHeader); // We declare the position as the size of one page times the page number
     if(fseek(file, position, SEEK_SET) != 0){ // If the seek is not successful (different than 0)
        return RC_READ_NON_EXISTING_PAGE;    // Non existing page
     }
     // If the seek is successful (equal to 0)
     fread(memPage, 1, PAGE_SIZE, file); // Read the page
     fHandle -> curPagePos = pageNum; // Update the current page position to the page number
-    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fHeader.curPagePos = pageNum; 
     return RC_OK;   
