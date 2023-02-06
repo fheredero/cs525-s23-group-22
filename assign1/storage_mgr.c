@@ -35,6 +35,7 @@ extern RC createPageFile (char *fileName){
     if (write != PAGE_SIZE){ 			
         return RC_WRITE_FAILED;			
     }
+    free(charArray);
     return(RC_OK);
 }
 
@@ -69,6 +70,7 @@ extern RC destroyPageFile (char *fileName){
     if(!file){
         return RC_FILE_NOT_FOUND;
     }
+    fclose(file);
     remove(fileName);   // Maybe add status
     return RC_OK;
 }
@@ -77,18 +79,18 @@ extern RC readBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage)
     if(fHandle->totalNumPages < pageNum || pageNum < 0){  // If the file has less than pageNum pages
         return RC_READ_NON_EXISTING_PAGE;   // Non existing page
     }
+    SM_FileHeader fHeader;
     FILE *file = fHandle->mgmtInfo; // Opens the file for both reading and writing
     if(!file){  // If file is NULL
         return RC_FILE_NOT_FOUND;   // File not found
     }
-    int position = PAGE_SIZE * pageNum; // We declare the position as the size of one page times the page number
+    int position = PAGE_SIZE * pageNum + sizeof(fHeader); // We declare the position as the size of one page times the page number
     if(fseek(file, position, SEEK_SET) != 0){ // If the seek is not successful (different than 0)
        return RC_READ_NON_EXISTING_PAGE;    // Non existing page
     }
     // If the seek is successful (equal to 0)
     fread(memPage, 1, PAGE_SIZE, file); // Read the page
     fHandle -> curPagePos = pageNum; // Update the current page position to the page number
-    SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fHeader.curPagePos = pageNum; 
     return RC_OK;   
@@ -138,7 +140,7 @@ extern RC writeBlock (int pageNum, SM_FileHandle *fHandle, SM_PageHandle memPage
     }
     SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
-    int position = pageNum*PAGE_SIZE;
+    int position = PAGE_SIZE * pageNum + sizeof(fHeader);
     fseek(file, position, SEEK_SET);
     int write = fwrite(memPage, 1, PAGE_SIZE, file);
     if(write != PAGE_SIZE){
@@ -171,6 +173,7 @@ extern RC appendEmptyBlock (SM_FileHandle *fHandle){
     fHandle -> totalNumPages++;
     fHeader.totalNumPages++;
     fseek(file, PAGE_SIZE*position, SEEK_SET); // We go back to the previous current position
+    free(charArray);
     return RC_OK;
 }
 
