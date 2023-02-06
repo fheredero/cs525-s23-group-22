@@ -29,12 +29,7 @@ extern RC createPageFile (char *fileName){
     fHeader.totalNumPages = 1;
     fHeader.curPagePos = 0;
     fwrite(&fHeader,sizeof(fHeader),1,file);
-    char *charArray = malloc(PAGE_SIZE);
-    int i = 0;
-    while(i < PAGE_SIZE){
-        charArray[i] = '\0';
-        i++;
-    }
+    char *charArray = calloc(PAGE_SIZE);
     int write = fwrite(charArray, 1, PAGE_SIZE, file);
     fclose(file);
     if (write != PAGE_SIZE){ 			
@@ -168,12 +163,8 @@ extern RC appendEmptyBlock (SM_FileHandle *fHandle){
     SM_FileHeader fHeader;
     fread(&fHeader, sizeof(fHeader), 1, file);
     fseek(file, fHandle->totalNumPages, SEEK_SET);
-    char * charArray =  malloc(PAGE_SIZE);
+    char * charArray =  calloc(PAGE_SIZE);
     int i = 0;
-    while(i < PAGE_SIZE){
-        charArray[i] = '\0';
-        i++;
-    }
     int status = fwrite(charArray, 1, PAGE_SIZE, file);
     if(status != PAGE_SIZE){
         return RC_WRITE_FAILED;
