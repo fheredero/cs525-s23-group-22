@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -o
+CFLAGS= -c -o
 
 all: test_assign1_1 run_test_assign1_1 memory_check_test_assign1_1
 
